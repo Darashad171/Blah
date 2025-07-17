@@ -1,114 +1,213 @@
-local Players = game:GetService("Players")
-local UIS = game:GetService("UserInputService")
-local TS = game:GetService("TweenService")
-local gui = Instance.new("ScreenGui")
-gui.ResetOnSpawn = false
-gui.Name = "CoolUI"
-gui.Parent = Players.LocalPlayer:WaitForChild("PlayerGui")
-local main = Instance.new("Frame")
-main.Size = UDim2.new(0, 200, 0, 160)
-main.Position = UDim2.new(0.5, -100, 0.5, -80)
-main.BackgroundColor3 = Color3.fromRGB(30, 30, 35)
-main.BorderSizePixel = 0
-main.Parent = gui
-Instance.new("UICorner", main).CornerRadius = UDim.new(0, 10)
-local bg = Instance.new("UIGradient")
-bg.Color = ColorSequence.new({
-    ColorSequenceKeypoint.new(0, Color3.fromRGB(40, 40, 45)),
-    ColorSequenceKeypoint.new(1, Color3.fromRGB(30, 30, 35))
-})
-bg.Parent = main
-local shadow = Instance.new("ImageLabel")
-shadow.Size = UDim2.new(1, 30, 1, 30)
-shadow.Position = UDim2.new(0, -15, 0, -15)
-shadow.BackgroundTransparency = 1
-shadow.Image = "rbxassetid://297774371"
-shadow.ImageColor3 = Color3.fromRGB(15, 15, 20)
-shadow.ImageTransparency = 0.6
-shadow.Parent = main
-local label = Instance.new("TextLabel")
-label.Size = UDim2.new(1, 0, 0, 30)
-label.BackgroundTransparency = 1
-label.Text = "Darakz Hub v5.0"
-label.TextColor3 = Color3.fromRGB(255, 255, 255)
-label.TextSize = 16
-label.Font = Enum.Font.GothamBold
-label.Parent = main
-local function makeToggle(text, yPos)
-    local base = Instance.new("Frame")
-    base.Size = UDim2.new(0.9, 0, 0, 30)
-    base.Position = UDim2.new(0.5, 0, 0, yPos)
-    base.BackgroundColor3 = Color3.fromRGB(40, 40, 45)
-    base.BorderSizePixel = 0
-    base.AnchorPoint = Vector2.new(0.5, 0)
-    base.Parent = main
-    Instance.new("UICorner", base).CornerRadius = UDim.new(0, 6)
-    local btn = Instance.new("TextButton")
-    btn.Size = UDim2.new(0, 40, 0, 20)
-    btn.Position = UDim2.new(1, -45, 0.5, -10)
-    btn.BackgroundColor3 = Color3.fromRGB(60, 60, 65)
-    btn.BorderSizePixel = 0
-    btn.Text = ""
-    btn.Parent = base
-    Instance.new("UICorner", btn).CornerRadius = UDim.new(1, 0)
-    local dot = Instance.new("Frame")
-    dot.Size = UDim2.new(0, 16, 0, 16)
-    dot.Position = UDim2.new(0, 2, 0.5, -8)
-    dot.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    dot.BorderSizePixel = 0
-    dot.Parent = btn
-    Instance.new("UICorner", dot).CornerRadius = UDim.new(1, 0)
-    local txt = Instance.new("TextLabel")
-    txt.Size = UDim2.new(1, -55, 1, 0)
-    txt.Position = UDim2.new(0, 10, 0, 0)
-    txt.BackgroundTransparency = 1
-    txt.Text = text
-    txt.TextColor3 = Color3.fromRGB(255, 255, 255)
-    txt.TextSize = 14
-    txt.Font = Enum.Font.Gotham
-    txt.TextXAlignment = Enum.TextXAlignment.Left
-    txt.Parent = base
-    local on = false
-    btn.MouseButton1Click:Connect(function()
-        on = not on
-        local goals = {
-            [btn] = {BackgroundColor3 = on and Color3.fromRGB(0, 170, 255) or Color3.fromRGB(60, 60, 65)},
-            [dot] = {Position = on and UDim2.new(1, -18, 0.5, -8) or UDim2.new(0, 2, 0.5, -8)}
-        }
-        for obj, goal in pairs(goals) do
-            TS:Create(obj, TweenInfo.new(0.2), goal):Play()
-        end
-    end)
+-- Darakz Hub v3.1 (Showcase GUI Script)
+-- For YouTube / Roleplay / Mock Trades only (does NOT affect other players)
+
+-- Check if Game is Blox Fruits (Game ID: 2753915549)
+if game.PlaceId ~= 2753915549 then
+    game.Players.LocalPlayer:Kick("❌ Darakz Hub only supports Blox Fruits!")
+    return
 end
-makeToggle("Freeze Trade", 40)
-makeToggle("Auto Accept", 80)
-makeToggle("Auto Add Items", 120)
-local drag = {
-    enabled = false,
-    start = nil,
-    startPos = nil
-}
-main.InputBegan:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-        drag.enabled = true
-        drag.start = input.Position
-        drag.startPos = main.Position
-        
-        input.Changed:Connect(function()
-            if input.UserInputState == Enum.UserInputState.End then
-                drag.enabled = false
-            end
-        end)
-    end
+
+-- Create Screen GUI
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "DarakzHubV5.0"
+ScreenGui.ResetOnSpawn = false
+ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+-- Create Main Frame
+local MainFrame = Instance.new("Frame")
+MainFrame.Size = UDim2.new(0, 250, 0, 200)
+MainFrame.Position = UDim2.new(0.5, -125, 0.5, -100)
+MainFrame.BackgroundColor3 = Color3.fromRGB(245, 245, 245)
+MainFrame.BorderSizePixel = 0
+MainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+MainFrame.Active = true
+MainFrame.Draggable = true
+MainFrame.Parent = ScreenGui
+
+-- UI Corner
+local UICorner = Instance.new("UICorner")
+UICorner.CornerRadius = UDim.new(0, 10)
+UICorner.Parent = MainFrame
+
+-- Title
+local Title = Instance.new("TextLabel")
+Title.Size = UDim2.new(1, 0, 0, 30)
+Title.BackgroundTransparency = 1
+Title.Text = "Darakz Hub v5.0"
+Title.Font = Enum.Font.GothamBold
+Title.TextColor3 = Color3.fromRGB(30, 30, 30)
+Title.TextSize = 18
+Title.Parent = MainFrame
+
+-- Close Button
+local CloseBtn = Instance.new("TextButton")
+CloseBtn.Size = UDim2.new(0, 25, 0, 25)
+CloseBtn.Position = UDim2.new(1, -30, 0, 5)
+CloseBtn.Text = "X"
+CloseBtn.Font = Enum.Font.GothamBold
+CloseBtn.TextColor3 = Color3.fromRGB(255, 0, 0)
+CloseBtn.TextSize = 16
+CloseBtn.BackgroundTransparency = 1
+CloseBtn.Parent = MainFrame
+CloseBtn.MouseButton1Click:Connect(function()
+    ScreenGui:Destroy()
 end)
-UIS.InputChanged:Connect(function(input)
-    if drag.enabled and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
-        local delta = input.Position - drag.start
-        main.Position = UDim2.new(
-            drag.startPos.X.Scale,
-            drag.startPos.X.Offset + delta.X,
-            drag.startPos.Y.Scale,
-            drag.startPos.Y.Offset + delta.Y
-        )
-    end
+
+-- Button Creator Function
+local function createButton(text, positionY, callback)
+    local Button = Instance.new("TextButton")
+    Button.Size = UDim2.new(0.8, 0, 0, 35)
+    Button.Position = UDim2.new(0.1, 0, 0, positionY)
+    Button.BackgroundColor3 = Color3.fromRGB(230, 230, 230)
+    Button.Text = text
+    Button.Font = Enum.Font.Gotham
+    Button.TextSize = 16
+    Button.TextColor3 = Color3.fromRGB(0, 0, 0)
+    Button.Parent = MainFrame
+
+    local corner = Instance.new("UICorner")
+    corner.CornerRadius = UDim.new(0, 6)
+    corner.Parent = Button
+
+    Button.MouseButton1Click:Connect(callback)
+end
+
+-- Fake Freeze Trade
+createButton("Freeze Trade", 40, function()
+    MainFrame.Visible = false
+    local freezeMsg = Instance.new("TextLabel")-- Darakz Hub v3.1 (Showcase GUI Script)
+-- For YouTube / Roleplay / Mock Trades only (does NOT affect other players)
+
+-- Create Screen GUI
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "DarakzHubV5.0"
+ScreenGui.ResetOnSpawn = false
+ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+-- Create Main Frame
+local MainFrame = Instance.new("Frame")
+MainFrame.Size = UDim2.new(0, 250, 0, 200)
+MainFrame.Position = UDim2.new(0.5, -125, 0.5, -100)
+MainFrame.BackgroundColor3 = Color3.fromRGB(245, 245, 245)
+MainFrame.BorderSizePixel = 0
+MainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+MainFrame.Active = true
+MainFrame.Draggable = true
+MainFrame.Parent = ScreenGui
+
+-- UI Corner
+local UICorner = Instance.new("UICorner")
+UICorner.CornerRadius = UDim.new(0, 10)
+UICorner.Parent = MainFrame
+
+-- Title
+local Title = Instance.new("TextLabel")
+Title.Size = UDim2.new(1, 0, 0, 30)
+Title.BackgroundTransparency = 1
+Title.Text = "Darakz Hub v5.0"
+Title.Font = Enum.Font.GothamBold
+Title.TextColor3 = Color3.fromRGB(30, 30, 30)
+Title.TextSize = 18
+Title.Parent = MainFrame
+
+-- Close Button
+local CloseBtn = Instance.new("TextButton")
+CloseBtn.Size = UDim2.new(0, 25, 0, 25)
+CloseBtn.Position = UDim2.new(1, -30, 0, 5)
+CloseBtn.Text = "X"
+CloseBtn.Font = Enum.Font.GothamBold
+CloseBtn.TextColor3 = Color3.fromRGB(255, 0, 0)
+CloseBtn.TextSize = 16
+CloseBtn.BackgroundTransparency = 1
+CloseBtn.Parent = MainFrame
+CloseBtn.MouseButton1Click:Connect(function()
+    ScreenGui:Destroy()
 end)
+
+-- Button Creator Function
+local function createButton(text, positionY, callback)
+    local Button = Instance.new("TextButton")
+    Button.Size = UDim2.new(0.8, 0, 0, 35)
+    Button.Position = UDim2.new(0.1, 0, 0, positionY)
+    Button.BackgroundColor3 = Color3.fromRGB(230, 230, 230)
+    Button.Text = text
+    Button.Font = Enum.Font.Gotham
+    Button.TextSize = 16
+    Button.TextColor3 = Color3.fromRGB(0, 0, 0)
+    Button.Parent = MainFrame
+    
+    local corner = Instance.new("UICorner")
+    corner.CornerRadius = UDim.new(0, 6)
+    corner.Parent = Button
+
+    Button.MouseButton1Click:Connect(callback)
+end
+
+-- Fake Freeze Trade
+createButton("Freeze Trade", 40, function()
+    MainFrame.Visible = false
+    local freezeMsg = Instance.new("TextLabel")
+    freezeMsg.Size = UDim2.new(1, 0, 1, 0)
+    freezeMsg.Text = "FREEZE TRADE... Crashing Victim..."
+    freezeMsg.BackgroundColor3 = Color3.new(0, 0, 0)
+    freezeMsg.TextColor3 = Color3.new(1, 0, 0)
+    freezeMsg.TextSize = 40
+    freezeMsg.Font = Enum.Font.GothamBlack
+    freezeMsg.Parent = ScreenGui
+    wait(3)
+    freezeMsg:Destroy()
+    MainFrame.Visible = true
+end)
+
+-- Fake Auto Accept
+createButton("Auto Accept", 85, function()
+    local msg = Instance.new("Hint")
+    msg.Text = "[Darakz Hub] Trade Accepted Automatically!"
+    msg.Parent = game.Workspace
+    wait(2.5)
+    msg:Destroy()
+end)
+
+-- Fake Auto Add Items
+createButton("Auto Add Items", 130, function()
+    local msg = Instance.new("Message")
+    msg.Text = "[Darakz Hub] BEST Fruit has been added to trade: Dragon Fruit"
+    msg.Parent = game.Workspace
+    wait(3)
+    msg:Destroy()
+end)
+
+-- Done!
+print("[Darakz Hub v3.1 GUI Load
+    freezeMsg.Size = UDim2.new(1, 0, 1, 0)
+    freezeMsg.Text = "FREEZE TRADE... Crashing Victim..."
+    freezeMsg.BackgroundColor3 = Color3.new(0, 0, 0)
+    freezeMsg.TextColor3 = Color3.new(1, 0, 0)
+    freezeMsg.TextSize = 40
+    freezeMsg.Font = Enum.Font.GothamBlack
+    freezeMsg.Parent = ScreenGui
+    wait(3)
+    freezeMsg:Destroy()
+    MainFrame.Visible = true
+end)
+
+-- Fake Auto Accept
+createButton("Auto Accept", 85, function()
+    local msg = Instance.new("Hint")
+    msg.Text = "[Darakz Hub] Trade Accepted Automatically!"
+    msg.Parent = game.Workspace
+    wait(2.5)
+    msg:Destroy()
+end)
+
+-- Fake Auto Add Items
+createButton("Auto Add Items", 130, function()
+    local msg = Instance.new("Message")
+    msg.Text = "[Darakz Hub] BEST Fruit has been added to trade: Dragon Fruit"
+    msg.Parent = game.Workspace
+    wait(3)
+    msg:Destroy()
+end)
+
+-- Done!
+print("[Darakz Hub v3.1 GUI Loaded]")
