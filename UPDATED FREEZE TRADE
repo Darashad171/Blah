@@ -1,13 +1,5 @@
-if game.PlaceId ~= 2753915549 then
-    game.Players.LocalPlayer:Kick("Darakz Hub only supports Blox Fruits!")
-    return
-end
-
--- Create Screen GUI
-local ScreenGui = Instance.new("ScreenGui")
-ScreenGui.Name = "DarakzHubV5.0"
-ScreenGui.ResetOnSpawn = false
-ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+-- Darakz Hub v3.1 (Showcase GUI Script)
+-- For YouTube 
 
 -- Create Main Frame
 local MainFrame = Instance.new("Frame")
@@ -68,7 +60,7 @@ local function createButton(text, positionY, callback)
     Button.MouseButton1Click:Connect(callback)
 end
 
--- Fake Freeze Trade
+-- Freeze Trade Button
 createButton("Freeze Trade", 40, function()
     MainFrame.Visible = false
     local freezeMsg = Instance.new("TextLabel")
@@ -84,7 +76,7 @@ createButton("Freeze Trade", 40, function()
     MainFrame.Visible = true
 end)
 
--- Fake Auto Accept
+-- Auto Accept Button
 createButton("Auto Accept", 85, function()
     local msg = Instance.new("Hint")
     msg.Text = "[Darakz Hub] Trade Accepted Automatically!"
@@ -93,7 +85,7 @@ createButton("Auto Accept", 85, function()
     msg:Destroy()
 end)
 
--- Fake Auto Add Items
+-- Auto Add Items Button
 createButton("Auto Add Items", 130, function()
     local msg = Instance.new("Message")
     msg.Text = "[Darakz Hub] BEST Fruit has been added to trade: Dragon Fruit"
@@ -102,5 +94,4 @@ createButton("Auto Add Items", 130, function()
     msg:Destroy()
 end)
 
--- Done!
 print("[Darakz Hub v3.1 GUI Loaded]")
