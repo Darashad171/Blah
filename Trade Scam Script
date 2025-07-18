@@ -1,10 +1,3 @@
--- Darakz Hub v3.1 (Showcase GUI Script)
-
-if game.PlaceId ~= 2753915549 then
-    game.Players.LocalPlayer:Kick("❌ Darakz Hub only supports Blox Fruits!")
-    return
-end
-
 -- Create Screen GUI
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Name = "DarakzHubV5.0"
