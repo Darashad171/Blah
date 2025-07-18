@@ -1,7 +1,5 @@
 -- Darakz Hub v3.1 (Showcase GUI Script)
--- For YouTube / Roleplay / Mock Trades only (does NOT affect other players)
 
--- Check if Game is Blox Fruits (Game ID: 2753915549)
 if game.PlaceId ~= 2753915549 then
     game.Players.LocalPlayer:Kick("❌ Darakz Hub only supports Blox Fruits!")
     return
